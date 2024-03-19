@@ -13,7 +13,10 @@
 
 ```
 git clone https://github.com/filatkinen/javaprofmodules
-cd javaprofmodules/mod01_testing
+cd javaprofmodules
+git switch mod01_testing
+cd mod01_testing
+
 mvn verify
 ```
 
