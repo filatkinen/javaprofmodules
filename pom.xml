@@ -14,11 +14,10 @@
         <module>mod03_stream_api</module>
         <module>mod04_threads</module>
         <module>mod05_patterns01</module>
-        <module>mod05_patterns02</module>
         <module>mod06_patterns02</module>
+        <module>mod07_jdbc</module>
         <module>mod08_web_server</module>
         <module>mod09_web_apps</module>
-        <module>mod07_jdbc</module>
     </modules>
 
     <properties>
