@@ -1,11 +1,13 @@
 package ru.otus.bank.service.impl;
 
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatcher;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.bank.entity.Account;
 import ru.otus.bank.entity.Agreement;
@@ -13,19 +15,25 @@ import ru.otus.bank.service.AccountService;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.regex.Matcher;
 
-import static org.mockito.Mockito.argThat;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class PaymentProcessorImplTest {
+class PaymentProcessorImplTest {
 
     @Mock
     AccountService accountService;
 
+    @Spy
     @InjectMocks
     PaymentProcessorImpl paymentProcessor;
+
+    @BeforeEach
+    public void init() {
+        paymentProcessor = new PaymentProcessorImpl(accountService);
+    }
+
 
     @Test
     public void testTransfer() {
@@ -46,12 +54,14 @@ public class PaymentProcessorImplTest {
         ArgumentMatcher<Agreement> m1 = argument -> argument != null && argument.getId() == 1L;
         ArgumentMatcher<Agreement> m2 = argument -> argument != null && argument.getId() == 2L;
 
+
         when(accountService.getAccounts(argThat(m1))).thenReturn(List.of(sourceAccount));
         when(accountService.getAccounts(argThat(m2))).thenReturn(List.of(destinationAccount));
 
 
         paymentProcessor.makeTransfer(sourceAgreement, destinationAgreement,
                 0, 0, BigDecimal.ONE);
+
 
     }
 

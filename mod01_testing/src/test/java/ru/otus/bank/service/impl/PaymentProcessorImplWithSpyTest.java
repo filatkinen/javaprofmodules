@@ -3,7 +3,6 @@ package ru.otus.bank.service.impl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatcher;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
@@ -23,7 +22,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.STRICT_STUBS)
-public class PaymentProcessorImplWithSpyTest {
+class PaymentProcessorImplWithSpyTest {
 
     @Mock
     AccountDao accountDao;
@@ -76,7 +75,4 @@ public class PaymentProcessorImplWithSpyTest {
         assertEquals(BigDecimal.ONE, destinationAccount.getAmount());
 
     }
-
-
-
 }

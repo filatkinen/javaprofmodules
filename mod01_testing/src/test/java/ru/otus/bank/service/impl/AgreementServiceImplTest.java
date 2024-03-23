@@ -11,7 +11,7 @@ import ru.otus.bank.entity.Agreement;
 
 import java.util.Optional;
 
-public class AgreementServiceImplTest {
+class AgreementServiceImplTest {
 
     private AgreementDao dao = mock(AgreementDao.class);
 

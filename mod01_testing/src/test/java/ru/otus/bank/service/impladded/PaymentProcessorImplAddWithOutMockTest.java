@@ -1,14 +1,8 @@
 package ru.otus.bank.service.impladded;
 
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatcher;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.bank.dao.AccountDao;
 import ru.otus.bank.dao.AgreementDao;
 import ru.otus.bank.entity.Account;
@@ -21,13 +15,10 @@ import ru.otus.bank.service.impl.AgreementServiceImpl;
 import ru.otus.bank.service.impl.PaymentProcessorImpl;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.argThat;
-import static org.mockito.Mockito.when;
 
-public class PaymentProcessorImplAddWithOutMockTest {
+class PaymentProcessorImplAddWithOutMockTest {
 
     AgreementService agreementService;
     AccountService accountService;
