@@ -11,7 +11,34 @@
 
     <artifactId>mod02_reflection_api</artifactId>
 
-<!--    <properties>-->
+    <packaging>jar</packaging>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven.jar.plugin.version}</version>
+
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>ru.otus.filatkinen.task02.testframework.launcher.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+
+        </plugins>
+    </build>
+
+
+
+
+
+    <!--    <properties>-->
 <!--        <maven.compiler.source>17</maven.compiler.source>-->
 <!--        <maven.compiler.target>17</maven.compiler.target>-->
 <!--        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
