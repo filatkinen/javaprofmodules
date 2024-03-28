@@ -50,13 +50,11 @@ public class Launcher {
 
     private void getMethodAnnotations(Method method) {
 
-        // Check Method Disabled Annotation
         if (method.isAnnotationPresent(Disabled.class)) {
             testSkipped++;
             return;
         }
 
-        // Check BeforeSuite and AfterSuite annotation
         if (method.isAnnotationPresent(BeforeSuite.class) && !method.isAnnotationPresent(Test.class)) {
             if (beforeSuite != null) {
                 failConfiguration = true;
@@ -76,11 +74,9 @@ public class Launcher {
             return;
         }
 
-        // Check Before and After annotation
         if ((method.isAnnotationPresent(Before.class) || method.isAnnotationPresent(After.class))
                 && method.isAnnotationPresent(Test.class)) {
             Test test = method.getAnnotation(Test.class);
-            //Check 1<=priority<=10. Otherwise, skip test
             if (!(test.priority() >= 1 && test.priority() <= 10)) {
                 return;
             }
@@ -94,7 +90,6 @@ public class Launcher {
             return;
         }
 
-        // Check Test Annotation
         if (method.isAnnotationPresent(Test.class)) {
             Test test = method.getAnnotation(Test.class);
             MethodInstance methodInstance = new MethodInstance(method, test.priority());
@@ -105,13 +100,11 @@ public class Launcher {
 
     private void initLauncher() {
 
-        // Check Class Disabled Annotation
         if (classLaunch.isAnnotationPresent(Disabled.class)) {
             skippedClass = true;
             return;
         }
 
-        // Check methods Annotaions
         for (Method method : classLaunch.getDeclaredMethods()) {
             testCount++;
             getMethodAnnotations(method);
@@ -124,10 +117,8 @@ public class Launcher {
             return x.priority < y.priority ? 1 : -1;
         };
 
-        // Sorting by priority
         methods.sort(cmp);
 
-        // Lets sorting by priority before and after too :)
         before.sort(cmp);
         after.sort(cmp);
 
@@ -135,11 +126,11 @@ public class Launcher {
 
     private void endLauncher() {
         System.out.println();
-        System.out.println("Статистика тестирования:");
-        System.out.printf("Всего методов: %d%n", testCount);
-        System.out.printf("Пропущено(Disabled): %d%n", testSkipped);
-        System.out.printf("Выполнено успешно: %d%n", testSuccessful);
-        System.out.printf("Завершились неудачей: %d%n", testFall);
+        log.info("Статистика тестирования:");
+        log.info(String.format("Всего методов: %d%n", testCount));
+        log.info(String.format("Пропущено(Disabled): %d%n", testSkipped));
+        log.info(String.format("Выполнено успешно: %d%n", testSuccessful));
+        log.info(String.format("Завершились неудачей: %d%n", testFall));
     }
 
 
@@ -156,7 +147,6 @@ public class Launcher {
 
         Object o = classLaunch.getConstructor().newInstance();
 
-        // BeforeSuite
         System.out.println(">>>>>>@BeforeSuite<<<<<<");
         launchMethod(beforeSuite, o);
 
@@ -185,11 +175,9 @@ public class Launcher {
             }
         }
 
-        // AfterSuite
         System.out.println("\n>>>>>>@AfterSuite<<<<<<");
         launchMethod(afterSuite, o);
 
-        // End
         endLauncher();
 
     }
