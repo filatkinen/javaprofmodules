@@ -28,7 +28,7 @@ class StreamApiTest {
     }
 
     @Test
-    public void testTaskListByStatus() {
+    void testTaskListByStatus() {
         List<Task> taskOpen = tasks.stream().filter(x -> x.getState() != null).
                 filter(x -> x.getState().equals(Status.Open)).toList();
         assertEquals(3, taskOpen.size());
@@ -44,7 +44,7 @@ class StreamApiTest {
 
 
     @Test
-    public void testGetTaskById() {
+    void testGetTaskById() {
         int checkID = 8;
         long countCheckID = tasks.stream().filter(x -> x.getId() == checkID).count();
         assertEquals(1, countCheckID);
@@ -55,7 +55,7 @@ class StreamApiTest {
     }
 
     @Test
-    public void testTaskListSortedByStatus() {
+    void testTaskListSortedByStatus() {
         Comparator<Task> cmpTaskStatus = ((x, y) -> {
             if (x.getState() == null) {
                 return -1;
@@ -78,7 +78,7 @@ class StreamApiTest {
     }
 
     @Test
-    public void testCountByStatus() {
+    void testCountByStatus() {
         long taskOpen = tasks.stream().filter(x -> x.getState() != null)
                 .filter(x -> x.getState().equals(Status.Open)).count();
         assertEquals(3, taskOpen);
