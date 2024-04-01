@@ -1,9 +1,9 @@
 package ru.otus.filatkinen.task03;
 
 public class Task {
-    public int id;
-    public String name;
-    public Status state;
+    private int id;
+    private String name;
+    private Status state;
 
     public Task() {
     }
@@ -21,6 +21,18 @@ public class Task {
     public Task setStatus(Status state) {
         this.state = state;
         return this;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Status getState() {
+        return state;
     }
 
     @Override
