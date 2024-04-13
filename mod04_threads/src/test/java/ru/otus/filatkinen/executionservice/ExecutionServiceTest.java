@@ -20,8 +20,7 @@ class ExecutionServiceTest {
 
         executorServiceCustom.shutdown();
 
-        while (!executorServiceCustom.getIsFinished()) {
-        }
+        executorServiceCustom.waiting();
 
         long millSeconds = (System.nanoTime() - start) / 1_000_000;
         System.out.printf("Threads=%d, tasks=%d, taskDelay=%d, time to take=%d%n", threads, tasks, taskDelay, millSeconds);
@@ -41,8 +40,7 @@ class ExecutionServiceTest {
         }
         executorServiceCustom.shutdown();
 
-        while (!executorServiceCustom.getIsFinished()) {
-        }
+        executorServiceCustom.waiting();
 
         long millSeconds = (System.nanoTime() - start) / 1_000_000;
         System.out.printf("Threads=%d, tasks=%d, taskDelay=%d, time to take=%d%n", threads, tasks, taskDelay, millSeconds);

@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 
 
@@ -15,11 +16,11 @@ public class ExecutorServiceCustom {
     private final LinkedList<Runnable> runnables;
     private final List<Thread> threads;
 
-    private final AtomicBoolean goWork;
     private final AtomicBoolean isShutDown;
-    private final AtomicBoolean isFinished;
+    private final AtomicInteger activeThreads;
     private final ReentrantLock lockQueueTasks = new ReentrantLock();
-
+    private final Object monitorJobsLine;
+    private final Object monitorActiveThreadsCount;
 
     public ExecutorServiceCustom() {
         this(default_capacity);
@@ -29,9 +30,10 @@ public class ExecutorServiceCustom {
         this.capacity = initialCapacity;
         runnables = new LinkedList<>();
         threads = new ArrayList<>();
-        goWork = new AtomicBoolean(true);
         isShutDown = new AtomicBoolean(false);
-        isFinished = new AtomicBoolean(false);
+        activeThreads = new AtomicInteger(this.capacity);
+        monitorJobsLine = new Object();
+        monitorActiveThreadsCount = new Object();
         createPool();
 
     }
@@ -39,9 +41,27 @@ public class ExecutorServiceCustom {
     private void createPool() {
         for (int i = 0; i < capacity; i++) {
             Thread t = new Thread(() -> {
-                while (goWork.get()) {
-                    Optional<Runnable> optionalRunnable = getNextRunnable();
+                while (true) {
+                    Optional<Runnable> optionalRunnable;
+                    synchronized (monitorJobsLine) {
+                        optionalRunnable = getNextRunnable();
+                        if (optionalRunnable.isEmpty() && isShutDown.get()) {
+                            break;
+                        }
+                        if (optionalRunnable.isEmpty()) {
+                            try {
+                                monitorJobsLine.wait();
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                        monitorJobsLine.notifyAll();
+                    }
                     optionalRunnable.ifPresent(Runnable::run);
+                }
+                synchronized (monitorActiveThreadsCount) {
+                    activeThreads.decrementAndGet();
+                    monitorActiveThreadsCount.notifyAll();
                 }
             });
             threads.add(t);
@@ -51,18 +71,23 @@ public class ExecutorServiceCustom {
         }
     }
 
-    public boolean getIsFinished() {
-        return isFinished.get();
+    public void waiting() {
+        while (activeThreads.get() != 0) {
+            synchronized (monitorActiveThreadsCount) {
+                try {
+                    monitorActiveThreadsCount.wait();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
     }
 
     private Optional<Runnable> getNextRunnable() {
         Optional<Runnable> optionalRunnable = Optional.empty();
         try {
             lockQueueTasks.lock();
-            if (isShutDown.get() && runnables.isEmpty()) {
-                goWork.set(false);
-                isFinished.set(true);
-            } else if (!runnables.isEmpty()) {
+            if (!runnables.isEmpty()) {
                 optionalRunnable = Optional.of(runnables.pop());
             }
         } finally {
@@ -72,14 +97,17 @@ public class ExecutorServiceCustom {
     }
 
     public void submitTask(Runnable r) {
-        try {
-            lockQueueTasks.lock();
+        synchronized (monitorJobsLine) {
             if (isShutDown.get()) {
                 throw new IllegalStateException();
             }
-            runnables.add(r);
-        } finally {
-            lockQueueTasks.unlock();
+            try {
+                lockQueueTasks.lock();
+                runnables.add(r);
+            } finally {
+                lockQueueTasks.unlock();
+            }
+            monitorJobsLine.notifyAll();
         }
     }
 
