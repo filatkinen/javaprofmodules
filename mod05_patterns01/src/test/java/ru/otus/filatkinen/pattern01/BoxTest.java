@@ -11,29 +11,51 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BoxTest {
+    List<String> list1,list2, list3,list4;
 
-    @Test
-    void runBoxTest() {
-        List<String> list1 = new ArrayList<>(Arrays.asList("1", "2", "3"));
-        List<String> list2 = new ArrayList<>(Arrays.asList("4", "5", "6"));
-        List<String> list3 = new ArrayList<>(Arrays.asList("7", "8", "9"));
-        List<String> list4 = new ArrayList<>(Arrays.asList("10", "11", "12"));
-
-        List<String> uniontList= new ArrayList<>();
-        uniontList.addAll(list1);
-        uniontList.addAll(list2);
-        uniontList.addAll(list3);
-        uniontList.addAll(list4);
-
-        List<String> resultList= new ArrayList<>();
-        Box box = new Box(list1,list2,list3,list4);
+    void Test(){
+        List<String> uniontList = new ArrayList<>();
+        if (list1!=null){
+            uniontList.addAll(list1);
+        }
+        if (list2!=null){
+            uniontList.addAll(list2);
+        }
+        if (list3!=null){
+            uniontList.addAll(list3);
+        }
+        if (list4!=null){
+            uniontList.addAll(list4);
+        }
+        List<String> resultList = new ArrayList<>();
+        Box box = new Box(list1, list2, list3, list4);
 
         Iterator iterator = box.getIterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             resultList.add(iterator.next().toString());
         }
 
-
-        assertEquals(resultList, uniontList);
+        assertEquals(uniontList, resultList);
     }
+
+    @Test
+    void runBoxTestSimple() {
+        list1 = new ArrayList<>(Arrays.asList("1", "2", "3"));
+        list2 = new ArrayList<>(Arrays.asList("4", "5", "6"));
+        list3 = new ArrayList<>(Arrays.asList("7", "8", "9"));
+        list4 = new ArrayList<>(Arrays.asList("10", "11", "12"));
+
+        Test();
+    }
+
+    @Test
+    void runBoxTestBorderSomeListIsNullAndSomeListIsEmpty() {
+        list1 = new ArrayList<>();
+        list2 = new ArrayList<>();
+        list3 = null;
+        list4 = null;
+
+        Test();
+    }
+
 }

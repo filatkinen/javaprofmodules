@@ -1,5 +1,12 @@
 package ru.otus.filatkinen.pattern01.Product;
 
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString()
 public class Product {
     private int id;
     private String title;
@@ -14,37 +21,6 @@ public class Product {
     private Product(){
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public int getCost() {
-        return cost;
-    }
-
-    public int getWeight() {
-        return weight;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getLength() {
-        return length;
-    }
-
-    public int getHeight() {
-        return height;
-    }
 
     private Product(ProductBuilder productBuilder){
         this.id = productBuilder.id;
@@ -69,9 +45,11 @@ public class Product {
         private int height;
 
 
-        public ProductBuilder(int id, String title) {
-            this.id = id;
-            this.title = title;
+        public static ProductBuilder builder(int id, String title) {
+            ProductBuilder builder = new ProductBuilder();
+            builder.id = id;
+            builder.title = title;
+            return builder;
         }
 
         public ProductBuilder setDescription(String description) {
@@ -105,18 +83,4 @@ public class Product {
         }
     }
 
-
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", cost=" + cost +
-                ", weight=" + weight +
-                ", width=" + width +
-                ", length=" + length +
-                ", height=" + height +
-                '}';
-    }
 }

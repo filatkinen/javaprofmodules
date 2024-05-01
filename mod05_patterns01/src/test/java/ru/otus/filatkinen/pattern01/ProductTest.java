@@ -1,13 +1,8 @@
 package ru.otus.filatkinen.pattern01;
 
 import org.junit.jupiter.api.Test;
-import ru.otus.filatkinen.pattern01.Box.Box;
-import ru.otus.filatkinen.pattern01.Box.Iterator;
 import ru.otus.filatkinen.pattern01.Product.Product;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -16,12 +11,12 @@ public class ProductTest {
     @Test
     void runProductTest() {
 
-        Product product1 = new Product.ProductBuilder(1,"Product1")
+        Product product1 = Product.ProductBuilder.builder(1,"Product1")
                 .setCost(10)
                 .setWidth(20)
                 .build();
 
-        Product product2 = new Product.ProductBuilder(2,"Product2")
+        Product product2 = Product.ProductBuilder.builder(2,"Product2")
                 .setDescription("Description product2")
                 .setLength(100)
                 .build();
