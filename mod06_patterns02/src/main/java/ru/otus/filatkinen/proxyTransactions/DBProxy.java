@@ -21,7 +21,22 @@ public class DBProxy implements DBStorage {
     }
 
     @Override
-    public void runTransaction(List<String> commands) throws SQLException {
-        dbStorage.runTransaction(commands);
+    public void execute(List<String> commands) throws SQLException {
+        dbStorage.execute(commands);
+    }
+
+    @Override
+    public void startTransaction() throws SQLException {
+        dbStorage.startTransaction();
+    }
+
+    @Override
+    public void commitTransaction() throws SQLException {
+        dbStorage.commitTransaction();
+    }
+
+    @Override
+    public void rollbackTransaction() throws SQLException {
+        dbStorage.rollbackTransaction();
     }
 }

@@ -6,27 +6,38 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TransactionTest {
 
     @Test
-    void runSimpleTransactionTest() throws SQLException {
-
+    void runSimpleTransactionTest()  {
         String connectionUrl = "jdbc:h2:mem:test";
         DBStorage dbStorage = new DBProxy(connectionUrl);
-        dbStorage.connect();
 
-        List<String> initDB = new ArrayList<>();
-        initDB.add("Create table students (ID int primary key, name varchar(50))");
-        initDB.add("Insert into students (ID, name) values (1, 'Nam Ha Minh')");
-        dbStorage.runTransaction(initDB);
+        try {
+            dbStorage.connect();
 
-        List<String> queryDB = new ArrayList<>();
-        queryDB.add("Select * from students");
-        dbStorage.runTransaction(queryDB);
+            dbStorage.startTransaction();
+            List<String> initDB = new ArrayList<>();
+            initDB.add("Create table students (ID int primary key, name varchar(50))");
+            initDB.add("Insert into students (ID, name) values (1, 'Nam Ha Minh')");
+            dbStorage.execute(initDB);
+            dbStorage.commitTransaction();
 
-        dbStorage.disconnect();
-
+            dbStorage.startTransaction();
+            List<String> queryDB = new ArrayList<>();
+            queryDB.add("Select * from students");
+            dbStorage.execute(queryDB);
+            dbStorage.commitTransaction();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                dbStorage.disconnect();
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
     }
 }
