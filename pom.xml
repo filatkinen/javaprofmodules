@@ -26,6 +26,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.jar.plugin.version>3.3.0</maven.jar.plugin.version>
         <jacoco.maven.plugin>0.8.11</jacoco.maven.plugin>
+        <maven.compiler.plugin>3.13.0</maven.compiler.plugin>
+        <lombok>1.18.32</lombok>
     </properties>
 
     <dependencyManagement>
@@ -70,6 +72,20 @@
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
             <version>${jacoco.maven.plugin}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok}</version>
+            <scope>provided</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>${maven.compiler.plugin}</version>
         </dependency>
 
     </dependencies>
