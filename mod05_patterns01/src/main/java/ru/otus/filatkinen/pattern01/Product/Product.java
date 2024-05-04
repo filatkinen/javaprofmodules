@@ -10,7 +10,6 @@ import lombok.ToString;
 public class Product {
     private int id;
     private String title;
-
     private String description;
     private int cost;
     private int weight;
@@ -18,11 +17,11 @@ public class Product {
     private int length;
     private int height;
 
-    private Product(){
+    public static ProductBuilder builder() {
+        return new ProductBuilder();
     }
 
-
-    private Product(ProductBuilder productBuilder){
+    private Product(ProductBuilder productBuilder) {
         this.id = productBuilder.id;
         this.title = productBuilder.title;
         this.description = productBuilder.description;
@@ -33,10 +32,9 @@ public class Product {
         this.height = productBuilder.height;
     }
 
-    public static class ProductBuilder{
+    public static class ProductBuilder {
         private int id;
         private String title;
-
         private String description;
         private int cost;
         private int weight;
@@ -45,11 +43,14 @@ public class Product {
         private int height;
 
 
-        public static ProductBuilder builder(int id, String title) {
-            ProductBuilder builder = new ProductBuilder();
-            builder.id = id;
-            builder.title = title;
-            return builder;
+        public ProductBuilder setId(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public ProductBuilder setTitle(String title) {
+            this.title = title;
+            return this;
         }
 
         public ProductBuilder setDescription(String description) {
@@ -61,24 +62,28 @@ public class Product {
             this.cost = cost;
             return this;
         }
+
         public ProductBuilder setWeight(int weight) {
             this.weight = weight;
             return this;
         }
+
         public ProductBuilder setWidth(int width) {
             this.width = width;
             return this;
         }
+
         public ProductBuilder setLength(int length) {
             this.length = length;
             return this;
         }
+
         public ProductBuilder setHeight(int height) {
             this.height = height;
             return this;
         }
 
-        public Product build(){
+        public Product build() {
             return new Product(this);
         }
     }

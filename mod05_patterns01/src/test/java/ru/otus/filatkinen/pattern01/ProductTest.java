@@ -11,12 +11,16 @@ public class ProductTest {
     @Test
     void runProductTest() {
 
-        Product product1 = Product.ProductBuilder.builder(1,"Product1")
+        Product product1 = Product.builder()
+                .setId(10)
+                .setTitle("Product1")
                 .setCost(10)
                 .setWidth(20)
                 .build();
 
-        Product product2 = Product.ProductBuilder.builder(2,"Product2")
+        Product product2 = Product.builder()
+                .setId(20)
+                .setTitle("Product2")
                 .setDescription("Description product2")
                 .setLength(100)
                 .build();

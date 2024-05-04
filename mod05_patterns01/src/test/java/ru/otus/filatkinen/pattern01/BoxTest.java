@@ -7,8 +7,9 @@ import ru.otus.filatkinen.pattern01.Box.Iterator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BoxTest {
     List<String> list1,list2, list3,list4;
@@ -39,7 +40,7 @@ public class BoxTest {
     }
 
     @Test
-    void runBoxTestSimple() {
+    void shouldRetrieveNotNullStringWhenAllListsNotEmpty() {
         list1 = new ArrayList<>(Arrays.asList("1", "2", "3"));
         list2 = new ArrayList<>(Arrays.asList("4", "5", "6"));
         list3 = new ArrayList<>(Arrays.asList("7", "8", "9"));
@@ -56,6 +57,21 @@ public class BoxTest {
         list4 = null;
 
         Test();
+    }
+
+    @Test
+    public void runBoxTestReturnNoSuchElementException() {
+        list1 = null;
+        list2 = null;
+        list3 = null;
+        list4 = null;
+
+        Box box = new Box(list1, list2, list3, list4);
+        Iterator iterator = box.getIterator();
+
+        Exception exception = assertThrows(NoSuchElementException.class, iterator::next);
+
+        assertEquals(NoSuchElementException.class, exception.getClass());
     }
 
 }
